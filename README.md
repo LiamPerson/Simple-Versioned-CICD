@@ -1,2 +1,2 @@
 # Simple-Versioned-CICD
-A simple CI/CD that listens for updates from a remote repository and automatically updates, logs, and contributes new changes.
+A simple CI/CD that uses Git to listen for updates from a remote repository and automatically update, log, and contribute new changes.
