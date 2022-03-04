@@ -11,6 +11,9 @@ A simple command line interface (CLI) continuous integration/continuous developm
 
 Version control for this software is handled by <a href="https://git-scm.com/">Git</a>. Something has gone wrong? Simply <a href="https://stackoverflow.com/questions/4114095/how-do-i-revert-a-git-repository-to-a-previous-commit">roll back</a> to when you're happy!
 
+<br />
+
+I recommend you use this software in virtual terminal such as a <a href="https://wiki.debian.org/screen">screen</a>
 
 <br />
 
@@ -52,4 +55,4 @@ This software requires <a href="https://git-scm.com/">Git</a> and <a href="https
 
 # Troubleshooting
 
-All the information you need will be stored in the <code>svcicd.log</code> file
+All the information you need will be stored in the <code>svcicd.log</code> file located in the same directory as the <code>SVCICD.sh</code> file.
