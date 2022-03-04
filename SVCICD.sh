@@ -10,13 +10,9 @@ BRANCH="master"
 
 REMOTE="origin/master"
 
-# Log
-# exec 3>&1 4>&2
-# trap 'exec 2>&4 1>&3' 0 1 2 3
-# exec 1>>$LOG_FILE 2>&1
-
-# Check for git
+# Check for git & tee
 hash git 2>/dev/null || { echo >&2 "This program requires git but it's not installed. "; echo -e "\nPress any key to exit ..."; read -n 1 -r -s; exit 1; }
+hash tee 2>/dev/null || { echo >&2 "This program requires tee but it's not installed. "; echo -e "\nPress any key to exit ..."; read -n 1 -r -s; exit 1; }
 
 function main() {
     # Check for remote changes ...
@@ -29,7 +25,6 @@ function main() {
         if [ $LOCAL = $REMOTE ]
         then
             # Check for changes locally ... 
-            # This will fail on divergence
             if [[ `git status --porcelain` ]]
             then
             echo -e "\n$(date +%F\|%H:%M:%S) >> Detected Local Changes"
@@ -43,7 +38,7 @@ function main() {
         then
             commit_and_push
         else
-            echo -e "\n$(date +%F\|%H:%M:%S) >> ERROR: Divergence detected ..."
+            echo -e "\n$(date +%F\|%H:%M:%S) >> ERROR: Divergence detected ... You may need to manually fix this as to not lose files!"
         fi
         sleep 2
     else
