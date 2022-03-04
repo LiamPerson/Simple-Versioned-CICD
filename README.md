@@ -22,9 +22,9 @@ This software requires <a href="https://git-scm.com/">Git</a> and <a href="https
 
 
 # Installation & Usage
-Simply run <code>SVCICD.sh</code> on your server and enter the correct details in the prompts. 
+<h3>Simply run <code>SVCICD.sh</code> on your server and enter the correct details in the prompts. </h3>
 
-
+<br />
 
 <b>Note:</b> All commits made by Simple Versioned CICD will be titled: <code>Automatic update from SVCICD</code>
 
