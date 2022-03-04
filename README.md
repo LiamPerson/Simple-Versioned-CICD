@@ -43,12 +43,10 @@ This software requires <a href="https://git-scm.com/">Git</a> and <a href="https
 <br />
 
 # Notes
-<ul>
-  <li>You may notice you can't immediately run the file when you place it. This is because you don't have the adequate permissions. To fix this, use: <code>chmod +x SVCICD.sh</code></li>
-</ul>
+You may notice you can't immediately run the file when you place it. This is because you don't have the adequate permissions. To fix this, use: <code>chmod +x SVCICD.sh</code>
 
 <br />
 
 # Troubleshooting
 
-All the information you need will be stored in the <code>svcicd.log</code> file
+All the information you need will be stored in the <code>svcicd.log</code> file located in the same directory as the <code>SVCICD.sh</code> file.
