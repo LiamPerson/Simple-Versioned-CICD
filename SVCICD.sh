@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 # Settings
 EXECUTION_LOCATION=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RUN_FROM=$EXECUTION_LOCATION
 echo -e "\n\n$(date +%F\|%H:%M:%S) >> Running SVCICD.sh ... \n\n" >> svcicd.log
 LOG_FILE=$(realpath svcicd.log)
+CONFIG_FILE="svcicd.conf"
 
+# Load defaults
+RUN_FROM=$EXECUTION_LOCATION
 FOUND_BRANCH=""
 BRANCH="master"
-
 REMOTE="origin/master"
+INTERVAL="25"
+# Load prefils
+. "$CONFIG_FILE" 2>/dev/null
+
 
 # Check for git & tee
 hash git 2>/dev/null || { echo >&2 "This program requires git but it's not installed. "; echo -e "\nPress any key to exit ..."; read -n 1 -r -s; exit 1; }
@@ -46,8 +51,12 @@ function main() {
     fi;
     
     # Loop
-    sleep 10
+    sleep "$INTERVAL"
     main
+}
+
+function save_defaults() {
+    echo -e "\nRUN_FROM="${RUN_FROM@Q}"\nINTERVAL="${INTERVAL@Q}"" > "$EXECUTION_LOCATION/$CONFIG_FILE"
 }
 
 function pull_remote() {
@@ -73,6 +82,7 @@ function check_for_remote() {
     then
         REMOTE=$(git rev-parse --abbrev-ref "$BRANCH"@{upstream})
         echo "Tracking using remote: $REMOTE"
+        save_defaults
         echo -e "\n\nSetup complete.\nBeginning listening ...\n"
         main
     else
@@ -91,7 +101,7 @@ function change_branch() {
         git checkout "$BRANCH"
         check_for_remote
     else
-        echo "Could not find: $BRANCH"
+        echo -e "\nCould not find: $BRANCH"
         change_branch
     fi;
 }
@@ -99,7 +109,7 @@ function change_branch() {
 # Check for remote repository in directory
 function check_on_branch() {
     FOUND_BRANCH=$(git symbolic-ref --short HEAD)
-    echo -e "Found branch: $FOUND_BRANCH"
+    echo -e "\nFound branch: $FOUND_BRANCH"
     echo -e "Do you want to use this branch? [y/n]"
     read -n 1 -r -s
     if [[ $REPLY =~ ^[Yy]$ ]]
@@ -125,13 +135,14 @@ function check_folder_for_git() {
 
 function change_folder_for_git() {
     # Get directory path from user
+    echo ""
     read -p "Please enter the directory of the repsitory you want to integrate with: " -r RUN_FROM
     check_folder_for_git
 }
 
 
 function select_folder_for_git() {
-    echo -e "Is \"$EXECUTION_LOCATION\" home to the resporitory you want to integrate with? [y/n]"
+    echo -e "\nIs \"$RUN_FROM\" home to the resporitory you want to integrate with? [y/n]"
     read -n 1 -r -s
     if [[ $REPLY =~ ^[Yy]$ ]]
     then
@@ -141,10 +152,35 @@ function select_folder_for_git() {
     fi;
 }
 
+function set_interval() {
+    echo -e "\nYou currently have the update interval"
+    echo -e "for this program set to $INTERVAL seconds"
+    echo -e "\nIs this time interval you wish to use? [y/n]"
+    read -n 1 -r -s
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        select_folder_for_git
+    else
+        set_valid_interval
+    fi;
+}
+
+function set_valid_interval() {
+    echo -e "\nPlease enter a valid interval in \nseconds higher than 4 second."
+    read -p "120 represents 2 minutes: " INTERVAL
+    if [[ $INTERVAL =~ [[:digit:]] ]] && [[ $INTERVAL -gt 4 ]]
+    then
+        select_folder_for_git
+    else
+        echo "The interval you've entere is invalid: $INTERVAL"
+        set_valid_interval
+    fi;
+}
+
 setup() {
     echo -e "This script will automatically update, "
     echo -e "log, and contribute to the desired remote.\n"
-    select_folder_for_git
+    set_interval
 }
 
 setup "$@" |& tee --append "$LOG_FILE"; exit

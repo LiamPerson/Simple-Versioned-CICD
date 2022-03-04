@@ -44,6 +44,7 @@ This software requires <a href="https://git-scm.com/">Git</a> and <a href="https
 
 # Notes
 <ul>
+  <li><code>svcicd.conf</code> automatically populates with what you provide in the setup</li>
   <li>You may notice you can't immediately run the file when you place it. This is because you don't have the adequate permissions. To fix this, use: <code>chmod +x SVCICD.sh</code></li>
 </ul>
 
