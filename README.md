@@ -4,7 +4,7 @@
 <br />
 
 <i>
-A simple command line interface (CLI) continuous integration/continuous development (CI/CD) that uses Git to listen for updates from a remote repository to automatically updates, logs, and contributes new changes.
+A simple command line interface (CLI) continuous integration/continuous deployment (CI/CD) that uses Git to listen for updates from a remote repository to automatically updates, logs, and contributes new changes.
 </i>
 
 <br />
